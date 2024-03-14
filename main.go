@@ -4,17 +4,21 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
 // Simple web server that will be dockerized
 func main() {
+	port := os.Getenv("PORT")
+
 	m := http.NewServeMux()
 	corsMux := middlewareCors(m)
 
 	m.HandleFunc("/", handlePage)
 
-	const addr = ":8080"
+	addr := ":" + port
+
 	srv := http.Server{
 		Handler:      corsMux,
 		Addr:         addr,
